@@ -1,0 +1,9 @@
+2017-01-12 17:07:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS ORDER[*] (ID IDENTITY, NAME VARCHAR, QUANTITY INT, PRICE INT, ORDER_ID INT) "; expected "identifier"; SQL statement:
+CREATE TABLE IF NOT EXISTS order (id IDENTITY, name VARCHAR, quantity INT, price INT, order_id INT) [42001-191]
+2017-01-13 16:05:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM USERS WHERE UPPER(EMAIL) = ?,[*] UPPER(NAME) = ? "; SQL statement:
+SELECT * FROM users where upper(email) = ?, upper(name) = ? [42000-191]
+2017-01-13 16:05:36 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM USERS WHERE UPPER(EMAIL) = ?,[*] UPPER(NAME) = ? "; SQL statement:
+SELECT * FROM users where upper(email) = ?, upper(name) = ? [42000-191]
