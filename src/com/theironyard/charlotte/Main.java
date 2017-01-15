@@ -9,17 +9,18 @@ import spark.template.mustache.MustacheTemplateEngine;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Main {
 
     public static void main(String[] args) throws SQLException {
+        Spark.staticFileLocation("/public");
         Server.createWebServer().start();
         Connection conn = DriverManager.getConnection("jdbc:h2:./main");
         User.createTable(conn);
-        Item.createTable(conn);
         Order.createTable(conn);
+        Item.createTable(conn);
         Spark.init();
 
 //        Spark.get("/scamAzon",
@@ -47,7 +48,7 @@ public class Main {
                         User currentUser = User.selectUserById(conn, new User(userId));
                         m.put("name", currentUser.name );
                         m.put("email",currentUser.email);
-
+                        m.put("orders", currentUser.orders);
                         return new ModelAndView(m, "scamAzonHome.html");
                     }
                 }),
@@ -58,12 +59,22 @@ public class Main {
                 ((request, response) -> {
                     String userEmail = request.queryParams("loginEmail");
                     String userName = request.queryParams("loginName");
-                    User.insertNewUser(conn, new User(userEmail, userName));
-                    User newUser = User.selectUserByNameAndEmail(conn, new User(userEmail, userName));
+                    User reqU = new User(userEmail, userName);
+                    User newUser = User.selectUserByNameAndEmail(conn, reqU);
+                    if (newUser == null){
+                        User.insertNewUser(conn, reqU);
+                        newUser = User.selectUserByNameAndEmail(conn, reqU);
+                        newUser.orders = new ArrayList<Item>();
+                    }
+                    else {
+                        newUser.orders = User.innerJoinCart(conn, newUser.id);
+                    }
+
                     Session session = request.session();
                     session.attribute("userId", newUser.id);
                     session.attribute("userName", newUser.name);
                     session.attribute("userEmail", newUser.email);
+                    session.attribute("orders", newUser.orders);
                     response.redirect("/");
                     return "";
                 })
@@ -77,5 +88,11 @@ public class Main {
                     return "";
                 })
         );
+//        Spark.get(
+//                "/ScamAzon-Order",
+//                ((request, response) -> {
+//
+//                })
+//        );
     }
 }

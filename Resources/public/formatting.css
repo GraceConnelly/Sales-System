@@ -1,0 +1,12 @@
+body {
+text-align: center;
+    background-color: #C9CDD5;
+}
+
+h1 {
+    color: #66717E;
+    text-align: center;
+    margin-left: 20px;
+    font-weight: bold;
+    font: "Courier New", Courier, monospace;
+}

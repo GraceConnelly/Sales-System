@@ -12,14 +12,14 @@ This system should:
 
 - Login users
    - You can have a predefined set of users beforehand.
-- Allow a user to build a "cart" of items.
+- Allow a user to build a "orders" of items.
    - You can just have three boxes here which comprise an item (quantity, name, and amount)
-   - The user gets to pick (not like in real life) the item, its cost, and its quantity before it gets added to the cart.
-- Allow a user to "checkout" the cart.
-   - "Checking Out" is basically showing them an order summary page and clearing their cart.
+   - The user gets to pick (not like in real life) the item, its cost, and its quantity before it gets added to the orders.
+- Allow a user to "checkout" the orders.
+   - "Checking Out" is basically showing them an order summary page and clearing their orders.
    - This summary page should show the user data, and the details of their order (the quantities, amount, and total amount)
 
-All of this information (the users, the items in their cart, and the orders) should be stored in a SQL database.
+All of this information (the users, the items in their orders, and the orders) should be stored in a SQL database.
 
 There should be 3 SQL tables that store this data:
 1. `users`

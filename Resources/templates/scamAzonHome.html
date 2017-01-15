@@ -1,14 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ScamAzon</title>
+    <link rel="stylesheet" type="text/css" href="formatting.css">
 </head>
 <body>
-<form action="/logout" method="post">
+<h1>ScamAzon</h1>
+<form action="/scamAzon-logout" method="post">
     <button type="submit">Logout</button>
 </form>
-Hello, {{name}}!
-you WEEEZZZMail is {{email}} ---I KNOW WHO YOU AREE
+<p>Hello, {{name}}!
+    Here are your orders!</p>
+<table border = "1" cellpadding = "5" cellspacing = "5">
+    <tr bgcolor = "#48c9b0">
+        <th>Name</th>
+        <th>Address</th>
+        <th>Type</th>
+        <th>Price</th>
+        <th>Rating</th>
+        <th>Edit</th>
+    </tr>
+    {{#restaurants}}
+    <tr bgcolor = "#FFC300">
+        <td>{{name}}</td>
+        <td>{{address}}</td>
+        <td>{{type}}</td>
+        <td>{{price}}</td>
+        <td>{{rating}}</td>
+        <td> <a href="/restaurant/{{id}}">Edit</a></td>
+    </tr>
+    {{/restaurants}}
 </body>
 </html>
