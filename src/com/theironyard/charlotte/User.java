@@ -67,8 +67,8 @@ public class User {
 
     public static User selectUserByNameAndEmail(Connection conn, User reqUser) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users where upper(email) = ? and upper(name) = ?");
-        stmt.setString(2, reqUser.getEmail().toUpperCase());
-        stmt.setString(1, reqUser.getName().toUpperCase());
+        stmt.setString(1, reqUser.getEmail().toUpperCase());
+        stmt.setString(2, reqUser.getName().toUpperCase());
         ResultSet results = stmt.executeQuery();
         if (results.next()) {
             return populateUser(results);
@@ -90,7 +90,7 @@ public class User {
     public static void insertNewUser(Connection conn, User newUser) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO users VALUES (NULL, ?, ?)");
         stmt.setString(1, newUser.getEmail());
-        stmt.setString(1, newUser.getName());
+        stmt.setString(2, newUser.getName());
         stmt.execute();
     }
 }

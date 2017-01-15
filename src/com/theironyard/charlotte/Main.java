@@ -37,16 +37,17 @@ public class Main {
                     HashMap m = new HashMap();
                     Session session = request.session();//look up existing cookie value if there isn't one then we will set a new cookie value
                     //theses items are coming from the website to populate
-                    Integer userId = session.attribute("userID");
-//                    String userEmail = session.attribute("userEmail");
-//                    String userName = session.attribute("userName");
-                    //check for user in database
+                    Integer userId = session.attribute("userId");
+                    String userEmail = session.attribute("userEmail");
+                    String userName = session.attribute("userName");
+//                    check for user in database
                     if (userId == null) {//if we don't have a User name lets ask them to log in
                         return new ModelAndView(m, "ScamAzon-login.html");
                     } else {//we have one...yay! lets make a view
                         User currentUser = User.selectUserById(conn, new User(userId));
                         m.put("name", currentUser.name );
                         m.put("email",currentUser.email);
+
                         return new ModelAndView(m, "scamAzonHome.html");
                     }
                 }),
@@ -63,7 +64,6 @@ public class Main {
                     session.attribute("userId", newUser.id);
                     session.attribute("userName", newUser.name);
                     session.attribute("userEmail", newUser.email);
-
                     response.redirect("/");
                     return "";
                 })
