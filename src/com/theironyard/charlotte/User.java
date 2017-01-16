@@ -99,22 +99,12 @@ public class User {
         }
     }
 
-    public static ArrayList<Item> innerJoinCart(Connection conn, int id) throws SQLException{
-        ArrayList<Item> items = null;
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM orders where user_id = ?;" +
-                "Inner join items on item.order_id = orders.id;");
-        stmt.setInt(1,id);
-        ResultSet results = stmt.executeQuery();
-        while (results.next()){
-            items.add(Item.populateItem(results));
-        }
-        return items;
-    }
     //Alters the Database
-    public static void insertNewUser(Connection conn, User newUser) throws SQLException {
+    public static User insertAndReturnNewUser(Connection conn, User newUser) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO users VALUES (NULL, ?, ?)");
         stmt.setString(1, newUser.getEmail());
         stmt.setString(2, newUser.getName());
         stmt.execute();
+        return selectUserByNameAndEmail(conn, newUser);
     }
 }

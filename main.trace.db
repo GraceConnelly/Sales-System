@@ -37,3 +37,47 @@ INSERT INTO users VALUES (NULL, ?, ?) [90012-191]
 	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:654)
 	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:572)
 	at java.lang.Thread.run(Thread.java:745)
+2017-01-15 18:10:50 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USERS VALUES(NULL, TOM@[*]TOM.TOM, TOM) "; expected "., (, [, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+insert into users values(Null, tom@tom.tom, tom) [42001-191]
+2017-01-15 18:10:50 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USERS VAULES[*](NULL, SALLY@SALLY.COM, SALLY) "; expected "., (, DIRECT, SORTED, DEFAULT, VALUES, SET, (, SELECT, FROM"; SQL statement:
+insert into users vaules(null, sally@sally.com, sally) [42001-191]
+2017-01-15 18:11:55 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USERS VALUES (NULL, TOM@[*]TOM.TOM, TOM) "; expected "., (, [, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+insert into users values (Null, tom@tom.tom, tom) [42001-191]
+2017-01-15 18:11:55 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USERS VAULES[*] (NULL, SALLY@SALLY.COM, SALLY) "; expected "., (, DIRECT, SORTED, DEFAULT, VALUES, SET, (, SELECT, FROM"; SQL statement:
+insert into users vaules (null, sally@sally.com, sally) [42001-191]
+2017-01-15 18:12:44 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USERS (NULL[*], TOM@TOM.TOM, TOM) "; expected "identifier"; SQL statement:
+INSERT INTO USERS (NULL, tom@tom.tom, tom) [42001-191]
+2017-01-15 18:12:44 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USERS VALUES (NULL, SALLY@[*]SALLY.COM, SALLY) "; expected "., (, [, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+INSERT INTO USERS VALUES (NULL, sally@sally.com, sally) [42001-191]
+2017-01-15 18:12:57 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USERS VALUES (NULL, TOM@[*]TOM.TOM, TOM) "; expected "., (, [, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+INSERT INTO USERS VALUES (NULL, tom@tom.tom, tom) [42001-191]
+2017-01-15 18:12:57 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USERS VALUES (NULL, SALLY@[*]SALLY.COM, SALLY) "; expected "., (, [, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+INSERT INTO USERS VALUES (NULL, sally@sally.com, sally) [42001-191]
+2017-01-15 18:13:59 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO USERS VALUES (NULL, SALLY@[*]SALLY.COM, SALLY) "; expected "., (, [, ::, *, /, %, +, -, ||, ~, !~, NOT, LIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+INSERT INTO users VALUES (NULL, SALLY@SALLY.COM, SALLY) [42001-191]
+2017-01-15 23:31:40 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Table "USERS" not found; SQL statement:
+drop table users [42102-191]
+2017-01-15 23:32:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: No data is available [2000-191]
+2017-01-15 23:33:05 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM ITEMS ORDERS USERS[*]"; SQL statement:
+SELECT * FROM ITEMS ORDERS USERS [42000-191]
+2017-01-15 23:36:40 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "ELECT[*] * FROM ORDERS WHERE USER_ID = 1 ORDER BY ID DESC "; expected "EXPLAIN, EXECUTE, {"; SQL statement:
+ELECT * FROM orders where user_id = 1 Order by id DESC [42001-191]
+2017-01-15 23:38:20 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: No data is available [2000-191]
+2017-01-15 23:41:21 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: No data is available [2000-191]
+2017-01-15 23:48:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: No data is available [2000-191]

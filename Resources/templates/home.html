@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:border-bottom="http://www.w3.org/1999/xhtml">
+<head>
+    <title>ScamAzon</title>
+    <link rel="stylesheet" type="text/css" href="formatting.css">
+</head>
+<body>
+    <h1>ScamAzon</h1>
+    <p id="p01">
+        <form action="/logout" method="post">
+            <button type="submit">Logout</button>
+        </form>
+        <form action="/cart" method="get">
+            <button type="submit">My Cart</button>
+        </form>
+    </p>
+    <h2>Let me know what you want, I can totally get it for you!</h2>
+    <form action ="/add-to-cart" method="post">
+        <input type="text" placeholder="Enter the item name" name="itemName"/>
+        <input type="number" placeholder="Qty" name="quantity"/>
+        <input type="number" placeholder="price" name="price"/>
+        <button type="submit">Add to Cart</button>
+    </form>
+    <h2>-OR-</h2>
+    <h2>Here are some completely legitimate items you may be interested in!</h2>
+    {{#inventory}}
+    <form action="/addToCart/{{id}}" method="get">
+    <table cellpadding = "5" cellspacing = "5">
+        <tr bgcolor = "#32213A" border-bottom: 1px solid black;>
+            <th>Item Name</th>
+            <th>Price</th>
+            <th>Add to Cart</th>
+        </tr>
+        <tr bgcolor = "#FFC300">
+            <td>{{itemName}}</td>
+            <td>{{price}}</td>
+            <td>
+                <button type="submit">Add to Cart</button>
+            </td>
+        </tr>
+    </table>
+    </form>
+    {{/inventory}}
+</body>
+</html>

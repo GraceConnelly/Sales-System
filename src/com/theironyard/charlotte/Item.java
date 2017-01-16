@@ -1,9 +1,7 @@
 package com.theironyard.charlotte;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Created by graceconnelly on 1/12/17.
@@ -84,5 +82,24 @@ public class Item {
         Double price = results.getDouble("price");
         int orderId = results.getInt("order_id");
         return new Item(id, name, quantity, price, orderId);
+    }
+
+    public static ArrayList<Item> listAllItems(Connection conn) throws SQLException {
+        ArrayList<Item> inventory = new ArrayList<>();
+        Statement stmt = conn.createStatement();
+        ResultSet results = stmt.executeQuery("SELECT * FROM items");
+        while (results.next()) {
+            inventory.add(populateItem(results));
+        }
+        return inventory;
+    }
+
+    public static void updateItem (Connection conn, Item item) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO items VALUES (NULL, ?, ?, ?, ?)");
+        stmt. setString(1, item.getName());
+        stmt.setInt(2, item.getQuantity());
+        stmt.setDouble(3, item.getPrice());
+        stmt.setInt(4, item.getOrderId());
+        stmt.execute();
     }
 }

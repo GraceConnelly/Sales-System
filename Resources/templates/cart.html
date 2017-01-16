@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Hello, {{name}}!
+    Here are your orders!</p>
+<table border = "1" cellpadding = "5" cellspacing = "5">
+    {{^name}}
+    {{/name}}
+    {{#items}}
+    <table cellpadding = "5" cellspacing = "5">
+        <tr bgcolor = "#32213A" bottom-border>
+            <th>Item Name</th>
+            <th>Price</th>
+        </tr>
+        <tr bgcolor = "#FFC300">
+            <td>{{itemName}}</td>
+            <td>{{price}}</td>
+        </tr>
+    </table>
+    {{/items}}
+
+</body>
+</html>
