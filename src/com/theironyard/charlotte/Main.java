@@ -9,7 +9,6 @@ import spark.template.mustache.MustacheTemplateEngine;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Main {
@@ -19,7 +18,8 @@ public class Main {
         Server.createWebServer().start();
         Connection conn = DriverManager.getConnection("jdbc:h2:./main");
         User.createTable(conn);
-        Order.createTable(conn);
+        Order.createOrderTable(conn);
+        Order.createOrderItemsTable(conn);
         Item.createTable(conn);
         Spark.init();
 
@@ -38,13 +38,13 @@ public class Main {
                     HashMap m = new HashMap();
                     Session session = request.session();//look up existing cookie value if there isn't one then we will set a new cookie value
                     //theses items are coming from the website to populate
-                    Integer userId = session.attribute("userId");
-                    Integer orderId = session.attribute("currentOrder");
+                    User currentUser = User.selectUserById(conn, session.attribute("userId"));
+                    Order currentOrder = Order.selectOrdersByID(conn, session.attribute("orderId"));
 //                    check for user in database
-                    if (userId == null) {//if we don't have a User name lets ask them to log in
+                    if (currentUser == null) {//if we don't have a User name lets ask them to log in
                         return new ModelAndView(m, "login.html");
-                    } else {//we have one...yay! lets make a view
-                        User currentUser = User.selectUserById(conn, new User(userId));
+                    }
+                    else {//we have one...yay! lets make a view
                         m.put("name", currentUser.name );
                         m.put("email",currentUser.email);
                         m.put("inventory",Item.listAllItems(conn));
@@ -68,12 +68,11 @@ public class Main {
 //                        newUser.orders = new ArrayList<Item>();
                     }
                     else {
-                        currentOrder = Order.returnLatestById(conn, reqU.id);
+                        currentOrder = Order.returnLatestById(conn, currentUser);
                     }
                     Session session = request.session();
                     session.attribute("userId", currentUser.id);
-                    session.attribute("userName", currentUser.name);
-                    session.attribute("currentOrder", currentOrder.id);
+                    session.attribute("orderId", currentOrder.id);
                     response.redirect("/");
                     return "";
                 })
@@ -92,16 +91,40 @@ public class Main {
                 ((request, response) -> {
                     Item itemToCart = new Item();
                     Session session = request.session();
-                    Integer userId = request.attribute("userId");
+                    User currentUser = User.selectUserById(conn, session.attribute("userId"));
+                    Order currentOrder = Order.selectOrdersByID(conn, session.attribute("orderId"));
+
                     itemToCart.setName(request.queryParams("itemName"));
-                    itemToCart.setQuantity(Integer.valueOf(request.queryParams("quantity")));
                     itemToCart.setPrice(Double.valueOf(request.queryParams("price")));
-                    Item.updateItem(conn, itemToCart);
-                    response.redirect("/restaurants");
+                    itemToCart.setQuantity(Integer.valueOf(request.queryParams("quantity")));
+
+                    //if item exists get its id
+                    //if item doesn't exist then I want to add it to my Items Table
+                    itemToCart = Item.insertSelectItemByNameAndPrice(conn, itemToCart);
+
+                    //when item exists check if item is in orderItems. if not add
+                    //if it does then update quantity.
+                    Order.insertUpdateOrderItems(conn, itemToCart, currentOrder.id);
+                    response.redirect("/");
                     return "";
                 })
         );
-
-
+        Spark.get(
+                "/cart",
+        ((request, response) ->{
+            HashMap m = new HashMap();
+            Session session = request.session();//look up existing cookie value if there isn't one then we will set a new cookie value
+            //theses items are coming from the website to populate
+            User currentUser = User.selectUserById(conn, session.attribute("userId"));
+            Order currentOrder = Order.selectOrdersByID(conn, session.attribute("orderId"));
+//                  check for user in database
+                m.put("name", currentUser.name );
+                m.put("email",currentUser.email);
+//                m.put("cart",Order.listCart(conn, currentOrder));
+                m.put("cart",Order.innerJoinItems(conn, currentOrder.id));
+                return new ModelAndView(m, "cart.html");
+            }),
+                new MustacheTemplateEngine()
+        );
     }
 }

@@ -20,10 +20,6 @@ public class User {
         this.name = name;
     }
 
-    public User(Integer id) {
-        this.id = id;
-    }
-
     public User(Integer id, String email, String name) {
         this.id = id;
         this.email = email;
@@ -87,18 +83,17 @@ public class User {
         }
     }
 
-    public static User selectUserById(Connection conn, User currentUser) throws SQLException{
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users where id = ?");
-        stmt.setInt(1, currentUser.id);
-        ResultSet results = stmt.executeQuery();
-        if(results.next()) {
-            return populateUser(results);
+    public static User selectUserById(Connection conn, Integer id) throws SQLException{
+        if(id != null) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users where id = ?");
+            stmt.setInt(1, id);
+            ResultSet results = stmt.executeQuery();
+            if (results.next()) {
+                return populateUser(results);
+            }
         }
-        else {
-            return null;
-        }
+        return null;
     }
-
     //Alters the Database
     public static User insertAndReturnNewUser(Connection conn, User newUser) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO users VALUES (NULL, ?, ?)");

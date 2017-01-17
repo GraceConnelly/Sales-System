@@ -5,23 +5,27 @@
     <title>Title</title>
 </head>
 <body>
-<p>Hello, {{name}}!
-    Here are your orders!</p>
-<table border = "1" cellpadding = "5" cellspacing = "5">
-    {{^name}}
-    {{/name}}
-    {{#items}}
-    <table cellpadding = "5" cellspacing = "5">
-        <tr bgcolor = "#32213A" bottom-border>
+<h1>ScamAzon</h1>
+<form action="/logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+<form action="/" method="get">
+    <button type="submit">Buy More Things</button>
+</form>
+<h2>{{name}}! This is your current, totally legitimate cart!</h2>
+    <table class = center cellpadding = "5" cellspacing = "5">
+        <tr>
             <th>Item Name</th>
             <th>Price</th>
+            <th>Quantity</th>
         </tr>
-        <tr bgcolor = "#FFC300">
-            <td>{{itemName}}</td>
+        {{#cart}}
+        <tr>
+            <td>{{name}}</td>
             <td>{{price}}</td>
+            <td>{{quantity}}</td>
         </tr>
+        {{/cart}}
     </table>
-    {{/items}}
-
 </body>
 </html>
