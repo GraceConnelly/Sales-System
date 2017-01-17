@@ -39,12 +39,16 @@ public class Main {
                     Session session = request.session();//look up existing cookie value if there isn't one then we will set a new cookie value
                     //theses items are coming from the website to populate
                     User currentUser = User.selectUserById(conn, session.attribute("userId"));
-                    Order currentOrder = Order.selectOrdersByID(conn, session.attribute("orderId"));
+                    Order currentOrder = Order.selectOpenOrdersByID(conn, session.attribute("orderId"));
 //                    check for user in database
                     if (currentUser == null) {//if we don't have a User name lets ask them to log in
                         return new ModelAndView(m, "login.html");
                     }
                     else {//we have one...yay! lets make a view
+                        if (currentOrder == null){
+                            currentOrder = Order.insertAndReturnNewOrder(conn, currentUser);
+                            session.attribute("orderId", currentOrder.id);
+                        }
                         m.put("name", currentUser.name );
                         m.put("email",currentUser.email);
                         m.put("inventory",Item.listAllItems(conn));
@@ -92,15 +96,20 @@ public class Main {
                     Item itemToCart = new Item();
                     Session session = request.session();
                     User currentUser = User.selectUserById(conn, session.attribute("userId"));
-                    Order currentOrder = Order.selectOrdersByID(conn, session.attribute("orderId"));
-
-                    itemToCart.setName(request.queryParams("itemName"));
-                    itemToCart.setPrice(Double.valueOf(request.queryParams("price")));
-                    itemToCart.setQuantity(Integer.valueOf(request.queryParams("quantity")));
-
-                    //if item exists get its id
-                    //if item doesn't exist then I want to add it to my Items Table
-                    itemToCart = Item.insertSelectItemByNameAndPrice(conn, itemToCart);
+                    Order currentOrder = Order.selectOpenOrdersByID(conn, session.attribute("orderId"));
+                    Integer itemId = Integer.valueOf(request.queryParams("id"));
+                    if (itemId == null) {
+                        itemToCart.setName(request.queryParams("itemName"));
+                        itemToCart.setPrice(Double.valueOf(request.queryParams("price")));
+                        itemToCart.setQuantity(Integer.valueOf(request.queryParams("quantity")));
+                        //if item exists get its id
+                        //if item doesn't exist then I want to add it to my Items Table
+                        itemToCart = Item.insertSelectItemByNameAndPrice(conn, itemToCart);
+                    }
+                    else{
+                        itemToCart = Item.insertSelectItemById(conn, itemId);
+                        itemToCart.setQuantity(Integer.valueOf(request.queryParams("quantity")));
+                    }
 
                     //when item exists check if item is in orderItems. if not add
                     //if it does then update quantity.
@@ -116,7 +125,7 @@ public class Main {
             Session session = request.session();//look up existing cookie value if there isn't one then we will set a new cookie value
             //theses items are coming from the website to populate
             User currentUser = User.selectUserById(conn, session.attribute("userId"));
-            Order currentOrder = Order.selectOrdersByID(conn, session.attribute("orderId"));
+            Order currentOrder = Order.selectOpenOrdersByID(conn, session.attribute("orderId"));
 //                  check for user in database
                 m.put("name", currentUser.name );
                 m.put("email",currentUser.email);
@@ -126,14 +135,14 @@ public class Main {
             }),
                 new MustacheTemplateEngine()
         );
-//        Spark.post(
-//                "/checkout",
-//                (((request, response) -> {
-//                    Session session = request.session();
-//                    Order.checkoutOrder(conn, session.attribute("orderId"));
-//                    response.redirect("/");
-//                    return "";
-//                }))
-//        )
+        Spark.post(
+                "/checkout",
+                (((request, response) -> {
+                    Session session = request.session();
+                    Order.checkout(conn, session.attribute("orderId"));
+                    response.redirect("/");
+                    return "";
+                }))
+        );
     }
 }

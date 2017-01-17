@@ -113,6 +113,17 @@ public class Item {
         }
         return inventory;
     }
+    public static Item insertSelectItemById(Connection conn, Integer id) throws SQLException {
+        if (id != null) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT TOP 1 * FROM items where id = ?");
+            stmt.setInt(1, id);
+            ResultSet results = stmt.executeQuery();
+            if (results.next()) {
+                return populateItem(results);
+            }
+        }
+        return null;
+    }
 
     public static Item insertSelectItemByNameAndPrice(Connection conn, Item item) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("SELECT TOP 1 * FROM items where upper(name) = ? and price = ?");

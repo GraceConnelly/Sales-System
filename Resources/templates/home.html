@@ -21,8 +21,6 @@
     </form>
     <h2>-OR-</h2>
     <h2>Here are some completely legitimate items you may be interested in!</h2>
-
-    <form action="/addToCart/" method="get">
     <table class = center cellpadding = "5" cellspacing = "5">
         <tr>
             <th>Item Name</th>
@@ -31,14 +29,17 @@
         </tr>
         {{#inventory}}
         <tr>
+            <form method="post" action= "/add-to-cart">
             <td>{{name}}</td>
             <td>{{price}}</td>
+            <td><input type="number" placeholder="Qty" name="quantity"/></td>
             <td>
-                <button type="submit">Add to Cart</button>
+                <input name="id" type="hidden" value="{{id}}"/>
+                    <button type = "submit">Add to Cart</button>
+                </form>
             </td>
         </tr>
         {{/inventory}}
     </table>
-    </form>
 </body>
 </html>

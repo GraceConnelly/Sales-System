@@ -101,7 +101,19 @@ public class Order {
         return null;
     }
 
-    public static Order selectOrdersByID (Connection conn, Integer id) throws SQLException {
+    public static Order selectOpenOrdersByID(Connection conn, Integer id) throws SQLException {
+        if (id != null) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM orders where id = ? AND open = true");
+            stmt.setInt(1, id);
+            ResultSet results = stmt.executeQuery();
+            if (results.next()) {
+                return populateOrder(results);
+            }
+        }
+        return null;
+    }
+
+    public static Order selectOrdersByID(Connection conn, Integer id) throws SQLException {
         if (id != null) {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM orders where id = ?");
             stmt.setInt(1, id);
@@ -161,5 +173,9 @@ public class Order {
         }
         return item;
     }
-    //public static c
+    public static void checkout (Connection conn, int id) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("UPDATE orders set open = false where id = ?");
+                stmt.setInt(1,id);
+                stmt.execute();
+    }
 }
