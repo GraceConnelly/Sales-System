@@ -1,7 +1,5 @@
 package com.theironyard.charlotte;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -86,6 +84,20 @@ public class Order {
             boolean open = results.getBoolean("open");
             return new Order(id, userId, open);
     }
+    //calculates subtotal of all items in currentorder
+    public static Total calcTotals(Connection conn, ArrayList<Item> items) throws SQLException{
+        Total total = new Total(0.0,0.0,0.0,0.0,0.0);
+        for (Item item : items) {
+             total.setSubtotal(total.getSubtotal()+(item.getPrice() * item.getQuantity()));
+        }
+        total.setShipping((total.getSubtotal()/10.0)+5.0);
+        total.setSubPreTax(total.getShipping()+total.getSubtotal());
+        total.setTax(total.getSubPreTax()*0.7);
+        total.setGrandTotal(total.getSubPreTax()+total.getTax());
+
+        return total;
+    }
+
     //START Pulls Things from Database
     public static Order returnLatestById (Connection conn, User currentU) throws SQLException{
         if (currentU.id != null) {

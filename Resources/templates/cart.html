@@ -31,5 +31,15 @@
         </tr>
         {{/cart}}
     </table>
+    <table class= center cellpadding="5"cellspacing="5">
+        {{total}}
+        <tr>
+            <td>Item(s) Subtotal: {{subtotal}}</td>
+            <td>Shipping & Handling: {{shipping}}</td>
+            <td>Total before tax: {{subPreTax}}</td>
+            <td>Estimated tax to be collected: {{tax}}</td>
+            <td>Grand Total: {{grandTotal}}</td>
+        </tr>
+    </table>
 </body>
 </html>

@@ -128,9 +128,11 @@ public class Main {
             Order currentOrder = Order.selectOpenOrdersByID(conn, session.attribute("orderId"));
 //                  check for user in database
                 m.put("name", currentUser.name );
-                m.put("email",currentUser.email);
+                m.put("email",  currentUser.email);
 //                m.put("cart",Order.listCart(conn, currentOrder));
-                m.put("cart",Order.innerJoinItems(conn, currentOrder.id));
+                currentOrder.items = Order.innerJoinItems(conn, currentOrder.id);
+                m.put("cart",currentOrder.items);
+                m.put("total",Order.calcTotals(conn, currentOrder.items));
                 return new ModelAndView(m, "cart.html");
             }),
                 new MustacheTemplateEngine()
