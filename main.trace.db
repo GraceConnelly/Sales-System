@@ -158,3 +158,499 @@ org.h2.jdbc.JdbcSQLException: Column "id" not found [42122-191]
 	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:654)
 	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:572)
 	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 12:11:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Column "id" not found [42122-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3129)
+	at org.h2.jdbc.JdbcResultSet.get(JdbcResultSet.java:3217)
+	at org.h2.jdbc.JdbcResultSet.getInt(JdbcResultSet.java:339)
+	at com.theironyard.charlotte.Item.populatePurchaseItem(Item.java:99)
+	at com.theironyard.charlotte.Order.innerJoinItems(Order.java:160)
+	at com.theironyard.charlotte.Main.lambda$main$4(Main.java:124)
+	at spark.TemplateViewRouteImpl$1.handle(TemplateViewRouteImpl.java:66)
+	at spark.webserver.MatcherFilter.doFilter(MatcherFilter.java:162)
+	at spark.webserver.JettyHandler.doHandle(JettyHandler.java:61)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:189)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:52)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:119)
+	at org.eclipse.jetty.server.Server.handle(Server.java:517)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:302)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:242)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:245)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:95)
+	at org.eclipse.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:75)
+	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.produceAndRun(ExecuteProduceConsume.java:213)
+	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:147)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:654)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:572)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 12:16:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT ID, NAME, PRICE, QUANTITY, ORDER_IDFROM ITEMS INNER[*] JOIN ORDER_ITEMS ON ORDER_ITEMS.ITEM_ID = ITEMS.ID WHERE ORDER_ITEMS.ORDER_ID = ?; "; SQL statement:
+SELECT id, name, price, quantity, order_idFROM items INNER JOIN order_items ON order_items.item_id = items.id WHERE order_items.order_id = ?; [42000-191]
+2017-01-17 12:19:17 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM ITEMS INNER JOIN ORDER_ITEMS ON ORDER_ITEMS.ITEM_ID ITEMS[*].ID WHERE ORDER_ITEMS.ORDER_ID = 2 "; SQL statement:
+SELECT * FROM items INNER JOIN order_items ON order_items.item_id items.id WHERE order_items.order_id = 2 [42000-191]
+2017-01-17 12:19:53 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT NAME, PRICE, QUANTITY, ORDER_ID FROM ITEMS INNER JOIN ORDER_ITEMS ON ORDER_ITEMS.ITEM_ID ITEMS[*].ID WHERE ORDER_ITEMS.ORDER_ID = 2 "; SQL statement:
+SELECT name, price, quantity, order_id FROM items INNER JOIN order_items ON order_items.item_id items.id WHERE order_items.order_id = 2 [42000-191]
+2017-01-17 12:22:54 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT ITEM.ID, ITEM.NAME, ITEM.PRICE, ITEM.QUANTITY, ORDER_ITEMS.ORDER_ID 
+INNER[*] JOIN ORDER_ITEMS ON ORDER_ITEMS.ITEMS_ID WHERE ORDER_ITEMS.ORDER_ID = 2 "; SQL statement:
+SELECT item.id, item.name, item.price, item.quantity, order_items.order_id 
+INNER JOIN order_items ON order_items.items_id WHERE order_items.order_id = 2 [42000-191]
+2017-01-17 12:25:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT ITEMS.ID, ITEM.NAME, ITEMS.PRICE, ITEMS.QUANTITY, ORDER_ITEMS.ORDER_ID 
+INNER[*] JOIN ORDER_ITEMS ON ORDER_ITEMS.ITEMS_ID WHERE ORDER_ITEMS.ORDER_ID = 2 "; SQL statement:
+SELECT items.id, item.name, items.price, items.quantity, order_items.order_id 
+INNER JOIN order_items ON order_items.items_id WHERE order_items.order_id = 2 [42000-191]
+2017-01-17 12:27:24 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Column "ITEM.NAME" not found; SQL statement:
+SELECT items.id, item.name, items.price, items.quantity, order_items.order_id from Items
+INNER JOIN order_items ON order_items.items_id WHERE order_items.order_id = 2 [42122-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:147)
+	at org.h2.command.dml.Select.prepare(Select.java:852)
+	at org.h2.command.Parser.prepareCommand(Parser.java:257)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 12:27:39 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Column "ITEMS.QUANTITY" not found; SQL statement:
+SELECT items.id, items.name, items.price, items.quantity, order_items.order_id from Items
+INNER JOIN order_items ON order_items.items_id WHERE order_items.order_id = 2 [42122-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:147)
+	at org.h2.command.dml.Select.prepare(Select.java:852)
+	at org.h2.command.Parser.prepareCommand(Parser.java:257)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 12:27:58 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Column "ORDER_ITEMS.ITEMS_ID" not found; SQL statement:
+SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id from Items
+INNER JOIN order_items ON order_items.items_id WHERE order_items.order_id = 2 [42122-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:147)
+	at org.h2.expression.ConditionAndOr.optimize(ConditionAndOr.java:131)
+	at org.h2.command.dml.Select.prepare(Select.java:855)
+	at org.h2.command.Parser.prepareCommand(Parser.java:257)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 12:32:22 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Ambiguous column name "ID"; SQL statement:
+SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id from Items
+INNER JOIN items ON order_items.item_id WHERE order_items.order_id = 2 [90059-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.mapColumn(ExpressionColumn.java:124)
+	at org.h2.expression.ExpressionColumn.mapColumns(ExpressionColumn.java:94)
+	at org.h2.command.dml.Select.mapColumns(Select.java:1228)
+	at org.h2.command.dml.Select.init(Select.java:827)
+	at org.h2.command.Parser.parseSelect(Parser.java:1693)
+	at org.h2.command.Parser.parsePrepared(Parser.java:443)
+	at org.h2.command.Parser.parse(Parser.java:315)
+	at org.h2.command.Parser.parse(Parser.java:287)
+	at org.h2.command.Parser.prepareCommand(Parser.java:252)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 12:42:57 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Schema "ORDER_ITEMS" not found; SQL statement:
+SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id from Items
+INNER JOIN order_items.item_id ON order_items WHERE order_items.order_id = 2 [90079-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.Parser.getSchema(Parser.java:666)
+	at org.h2.command.Parser.getSchema(Parser.java:673)
+	at org.h2.command.Parser.readTableFilter(Parser.java:1203)
+	at org.h2.command.Parser.readJoin(Parser.java:1537)
+	at org.h2.command.Parser.parseJoinTableFilter(Parser.java:1929)
+	at org.h2.command.Parser.parseSelectSimpleFromPart(Parser.java:1885)
+	at org.h2.command.Parser.parseSelectSimple(Parser.java:2032)
+	at org.h2.command.Parser.parseSelectSub(Parser.java:1878)
+	at org.h2.command.Parser.parseSelectUnion(Parser.java:1699)
+	at org.h2.command.Parser.parseSelect(Parser.java:1687)
+	at org.h2.command.Parser.parsePrepared(Parser.java:443)
+	at org.h2.command.Parser.parse(Parser.java:315)
+	at org.h2.command.Parser.parse(Parser.java:287)
+	at org.h2.command.Parser.prepareCommand(Parser.java:252)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 12:49:10 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Schema "ORDER_ITEMS" not found; SQL statement:
+SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id from order_items
+INNER JOIN order_items.item_id ON order_items WHERE order_items.order_id = 2 [90079-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.Parser.getSchema(Parser.java:666)
+	at org.h2.command.Parser.getSchema(Parser.java:673)
+	at org.h2.command.Parser.readTableFilter(Parser.java:1203)
+	at org.h2.command.Parser.readJoin(Parser.java:1537)
+	at org.h2.command.Parser.parseJoinTableFilter(Parser.java:1929)
+	at org.h2.command.Parser.parseSelectSimpleFromPart(Parser.java:1885)
+	at org.h2.command.Parser.parseSelectSimple(Parser.java:2032)
+	at org.h2.command.Parser.parseSelectSub(Parser.java:1878)
+	at org.h2.command.Parser.parseSelectUnion(Parser.java:1699)
+	at org.h2.command.Parser.parseSelect(Parser.java:1687)
+	at org.h2.command.Parser.parsePrepared(Parser.java:443)
+	at org.h2.command.Parser.parse(Parser.java:315)
+	at org.h2.command.Parser.parse(Parser.java:287)
+	at org.h2.command.Parser.prepareCommand(Parser.java:252)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 12:49:32 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Ambiguous column name "ITEM_ID"; SQL statement:
+SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id from order_items
+INNER JOIN order_items ON order_items.item_id WHERE order_items.order_id = 2 [90059-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.mapColumn(ExpressionColumn.java:124)
+	at org.h2.expression.ExpressionColumn.mapColumns(ExpressionColumn.java:94)
+	at org.h2.table.TableFilter$3.accept(TableFilter.java:673)
+	at org.h2.table.TableFilter.visit(TableFilter.java:1166)
+	at org.h2.table.TableFilter.addJoin(TableFilter.java:670)
+	at org.h2.command.Parser.readJoin(Parser.java:1544)
+	at org.h2.command.Parser.parseJoinTableFilter(Parser.java:1929)
+	at org.h2.command.Parser.parseSelectSimpleFromPart(Parser.java:1885)
+	at org.h2.command.Parser.parseSelectSimple(Parser.java:2032)
+	at org.h2.command.Parser.parseSelectSub(Parser.java:1878)
+	at org.h2.command.Parser.parseSelectUnion(Parser.java:1699)
+	at org.h2.command.Parser.parseSelect(Parser.java:1687)
+	at org.h2.command.Parser.parsePrepared(Parser.java:443)
+	at org.h2.command.Parser.parse(Parser.java:315)
+	at org.h2.command.Parser.parse(Parser.java:287)
+	at org.h2.command.Parser.prepareCommand(Parser.java:252)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 12:57:19 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Ambiguous column name "ID"; SQL statement:
+--SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id 
+Select * from items
+INNER JOIN items ON order_items.order_id WHERE order_items.order_id = 2 [90059-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.mapColumn(ExpressionColumn.java:124)
+	at org.h2.expression.ExpressionColumn.mapColumns(ExpressionColumn.java:94)
+	at org.h2.command.dml.Select.mapColumns(Select.java:1228)
+	at org.h2.command.dml.Select.init(Select.java:827)
+	at org.h2.command.Parser.parseSelect(Parser.java:1693)
+	at org.h2.command.Parser.parsePrepared(Parser.java:443)
+	at org.h2.command.Parser.parse(Parser.java:315)
+	at org.h2.command.Parser.parse(Parser.java:287)
+	at org.h2.command.Parser.prepareCommand(Parser.java:252)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 12:58:30 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Schema "ITEMS" not found; SQL statement:
+--SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id 
+
+Select * from order_items
+INNER JOIN items.id ON order_items.item_id WHERE order_items.order_id = 2 [90079-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.Parser.getSchema(Parser.java:666)
+	at org.h2.command.Parser.getSchema(Parser.java:673)
+	at org.h2.command.Parser.readTableFilter(Parser.java:1203)
+	at org.h2.command.Parser.readJoin(Parser.java:1537)
+	at org.h2.command.Parser.parseJoinTableFilter(Parser.java:1929)
+	at org.h2.command.Parser.parseSelectSimpleFromPart(Parser.java:1885)
+	at org.h2.command.Parser.parseSelectSimple(Parser.java:2032)
+	at org.h2.command.Parser.parseSelectSub(Parser.java:1878)
+	at org.h2.command.Parser.parseSelectUnion(Parser.java:1699)
+	at org.h2.command.Parser.parseSelect(Parser.java:1687)
+	at org.h2.command.Parser.parsePrepared(Parser.java:443)
+	at org.h2.command.Parser.parse(Parser.java:315)
+	at org.h2.command.Parser.parse(Parser.java:287)
+	at org.h2.command.Parser.prepareCommand(Parser.java:252)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 12:59:24 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Schema "ITEMS" not found; SQL statement:
+--SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id 
+
+Select * from items
+INNER JOIN items.id ON order_items.item_id WHERE order_items.order_id = 2 [90079-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.Parser.getSchema(Parser.java:666)
+	at org.h2.command.Parser.getSchema(Parser.java:673)
+	at org.h2.command.Parser.readTableFilter(Parser.java:1203)
+	at org.h2.command.Parser.readJoin(Parser.java:1537)
+	at org.h2.command.Parser.parseJoinTableFilter(Parser.java:1929)
+	at org.h2.command.Parser.parseSelectSimpleFromPart(Parser.java:1885)
+	at org.h2.command.Parser.parseSelectSimple(Parser.java:2032)
+	at org.h2.command.Parser.parseSelectSub(Parser.java:1878)
+	at org.h2.command.Parser.parseSelectUnion(Parser.java:1699)
+	at org.h2.command.Parser.parseSelect(Parser.java:1687)
+	at org.h2.command.Parser.parsePrepared(Parser.java:443)
+	at org.h2.command.Parser.parse(Parser.java:315)
+	at org.h2.command.Parser.parse(Parser.java:287)
+	at org.h2.command.Parser.prepareCommand(Parser.java:252)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 12:59:55 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "                                                                                       
+SELECT * FROM ORDER_ITEMS
+INNER JOIN ITEMS ON ORDER_ITEMS.ITEM_ID 
+IWHERE[*] ORDER_ITEMS.ORDER_ID = 2 "; SQL statement:
+--SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id 
+Select * from order_items
+INNER JOIN items ON order_items.item_id 
+IWHERE order_items.order_id = 2 [42000-191]
+2017-01-17 13:00:09 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Ambiguous column name "ID"; SQL statement:
+--SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id 
+Select * from items
+INNER JOIN items ON order_items.order_id WHERE order_items.order_id = 2 [90059-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.mapColumn(ExpressionColumn.java:124)
+	at org.h2.expression.ExpressionColumn.mapColumns(ExpressionColumn.java:94)
+	at org.h2.command.dml.Select.mapColumns(Select.java:1228)
+	at org.h2.command.dml.Select.init(Select.java:827)
+	at org.h2.command.Parser.parseSelect(Parser.java:1693)
+	at org.h2.command.Parser.parsePrepared(Parser.java:443)
+	at org.h2.command.Parser.parse(Parser.java:315)
+	at org.h2.command.Parser.parse(Parser.java:287)
+	at org.h2.command.Parser.prepareCommand(Parser.java:252)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 13:00:22 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Column "ITEMS.ORDER_ID" not found; SQL statement:
+--SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id 
+Select * from order_items
+INNER JOIN items ON order_items.order_id WHERE items.order_id = 2 [42122-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:147)
+	at org.h2.expression.Comparison.optimize(Comparison.java:178)
+	at org.h2.expression.ConditionAndOr.optimize(ConditionAndOr.java:130)
+	at org.h2.command.dml.Select.prepare(Select.java:855)
+	at org.h2.command.Parser.prepareCommand(Parser.java:257)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 13:00:38 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Column "ITEMS.ORDER_ID" not found; SQL statement:
+--SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id 
+Select * from order_items
+INNER JOIN items ON items.order_id WHERE items.order_id = 2 [42122-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:147)
+	at org.h2.expression.Comparison.optimize(Comparison.java:178)
+	at org.h2.expression.ConditionAndOr.optimize(ConditionAndOr.java:130)
+	at org.h2.command.dml.Select.prepare(Select.java:855)
+	at org.h2.command.Parser.prepareCommand(Parser.java:257)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 13:07:02 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Table "ITEM_ORDER" not found; SQL statement:
+--SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id 
+
+Select * from items
+INNER JOIN item_order ON items.id WHERE item_orders.order_id = 2 [42102-191]
+2017-01-17 13:07:20 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Table "ITEM_ORDERS" not found; SQL statement:
+--SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id 
+
+Select * from items
+INNER JOIN item_orders ON items.id WHERE item_orders.order_id = 2 [42102-191]
+2017-01-17 13:14:29 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Column "ORDER_ITEMS.ID" not found; SQL statement:
+--SELECT items.id, items.name, items.price, order_items.quantity, order_items.order_id 
+
+Select order_items.id, items.name, items.price, order_items.quantity, order_items.order_id  from items
+INNER JOIN order_items ON items.id = Order_items.item_id WHERE order_items.order_id = 2 [42122-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:147)
+	at org.h2.command.dml.Select.prepare(Select.java:852)
+	at org.h2.command.Parser.prepareCommand(Parser.java:257)
+	at org.h2.engine.Session.prepareLocal(Session.java:560)
+	at org.h2.engine.Session.prepareCommand(Session.java:501)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1188)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1388)
+	at org.h2.server.web.WebApp.query(WebApp.java:1061)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1023)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1010)
+	at org.h2.server.web.WebThread.process(WebThread.java:164)
+	at org.h2.server.web.WebThread.run(WebThread.java:89)
+	at java.lang.Thread.run(Thread.java:745)
+2017-01-17 13:16:05 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Column "id" not found [42122-191]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3129)
+	at org.h2.jdbc.JdbcResultSet.get(JdbcResultSet.java:3217)
+	at org.h2.jdbc.JdbcResultSet.getInt(JdbcResultSet.java:339)
+	at com.theironyard.charlotte.Item.populatePurchaseItem(Item.java:99)
+	at com.theironyard.charlotte.Order.innerJoinItems(Order.java:158)
+	at com.theironyard.charlotte.Main.lambda$main$4(Main.java:124)
+	at spark.TemplateViewRouteImpl$1.handle(TemplateViewRouteImpl.java:66)
+	at spark.webserver.MatcherFilter.doFilter(MatcherFilter.java:162)
+	at spark.webserver.JettyHandler.doHandle(JettyHandler.java:61)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:189)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:52)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:119)
+	at org.eclipse.jetty.server.Server.handle(Server.java:517)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:302)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:242)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:245)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:95)
+	at org.eclipse.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:75)
+	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.produceAndRun(ExecuteProduceConsume.java:213)
+	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:147)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:654)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:572)
+	at java.lang.Thread.run(Thread.java:745)

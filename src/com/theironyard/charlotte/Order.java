@@ -76,7 +76,7 @@ public class Order {
                         "order_id INT NOT NULL, " +
                         "item_id INT NOT NULL, " +
                         "quantity INT NOT NULL," +
-                "CONSTRAINT pk_OrderItem PRIMARY KEY ( order_id,item_id))");
+                "CONSTRAINT pk_OrderItem PRIMARY KEY (order_id, item_id))");
         }
 
     //Populates order object with returned data from database
@@ -112,6 +112,8 @@ public class Order {
         }
         return null;
     }
+
+    //START Methods that Alter Database
 
     public static void insertUpdateOrderItems(Connection conn, Item item, int orderId ) throws SQLException{
         PreparedStatement stmt = conn.prepareStatement("SELECT TOP 1 * FROM order_items where order_id = ? and item_id =?");
@@ -149,16 +151,15 @@ public class Order {
     }
 
     public static ArrayList<Item> innerJoinItems(Connection conn, int id) throws SQLException {
-        ArrayList<Item> items = null;
-        PreparedStatement stmt = conn.prepareStatement("SELECT name, price, quantity, order_id " +
-                "FROM items " +
-                "INNER JOIN order_items ON order_items.item_id = items.id " +
-                "WHERE order_items.order_id = ?;");
+        ArrayList<Item> item = new ArrayList<>();
+        PreparedStatement stmt = conn.prepareStatement("Select order_items.item_id, items.name, items.price, order_items.quantity, order_items.order_id  from items\n" +
+                "INNER JOIN order_items ON items.id = Order_items.item_id WHERE order_items.order_id = ?");
         stmt.setInt(1, id);
         ResultSet results = stmt.executeQuery();
         while (results.next()) {
-            items.add(Item.populatePurchaseItem(results));
+            item.add(Item.populatePurchaseItem(results));
         }
-        return items;
+        return item;
     }
+    //public static c
 }

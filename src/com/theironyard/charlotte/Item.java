@@ -96,12 +96,12 @@ public class Item {
         return new Item(id, name, price);
     }
     public static Item populatePurchaseItem(ResultSet results) throws SQLException {
-        int id = results.getInt("id");
+        int id = results.getInt("item_id");
         String name = results.getString("name");
         Double price = results.getDouble("price");
         Integer quantity = results.getInt("quantity");
         Integer orderId = results.getInt("order_id");
-        return new Item(id, name, price);
+        return new Item(id, name, price, quantity, orderId);
     }
 
     public static ArrayList<Item> listAllItems(Connection conn) throws SQLException {

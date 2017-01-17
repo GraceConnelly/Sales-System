@@ -126,5 +126,14 @@ public class Main {
             }),
                 new MustacheTemplateEngine()
         );
+//        Spark.post(
+//                "/checkout",
+//                (((request, response) -> {
+//                    Session session = request.session();
+//                    Order.checkoutOrder(conn, session.attribute("orderId"));
+//                    response.redirect("/");
+//                    return "";
+//                }))
+//        )
     }
 }
