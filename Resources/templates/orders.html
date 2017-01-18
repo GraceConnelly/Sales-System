@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+    <link rel="stylesheet" type="text/css" href="formatting.css">
+</head>
+<body>
+<h1>ScamAzon</h1>
+<form action="/logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+<form action="/" method="get">
+    <button type="submit">Wait! I want to BUY MORE THINGS!</button>
+</form>
+<h2>{{name}}! Here are the items you, obviously, already have!</h2>
+{{^orders}}
+<h2>ERRR, actually you don't have anything in your cart. You best get to buying stuff!</h2>
+{{/orders}}
+<table class = center cellpadding = "5" cellspacing = "5">
+    {{#orders}}
+    <tr>
+        <th>Item Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+    </tr>
+    {{#items}}
+    <tr>
+        <td>{{name}}</td>
+        <td>{{price}}</td>
+        <td>{{quantity}}</td>
+    </tr>
+    {{/items}}
+</table>
+<table class = center cellpadding="5"cellspacing="5">
+    {{#total}}
+        <td><h2>You paid WHAT?!</h2></td>
+        <td><h2>{{grandTotal}}</h2></td>
+    </tr>
+    {{/total}}
+    {{/orders}}
+
+</table>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package com.theironyard.charlotte;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -11,6 +13,7 @@ public class Order {
     Integer userId;
     boolean open;
     ArrayList<Item> items;
+    Total total;
 
     public Order() {
     }
@@ -29,6 +32,8 @@ public class Order {
         this.userId = userId;
         this.open = open;
     }
+
+
 
     public Integer getId() {
         return id;
@@ -62,6 +67,14 @@ public class Order {
         this.items = items;
     }
 
+    public Total getTotal() {
+        return total;
+    }
+
+    public void setTotal(Total total) {
+        this.total = total;
+    }
+
     public static void createOrderTable(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
         stmt.execute("CREATE TABLE IF NOT EXISTS orders (id IDENTITY, user_id INT, open BOOLEAN)");
@@ -92,7 +105,7 @@ public class Order {
         }
         total.setShipping((total.getSubtotal()/10.0)+5.0);
         total.setSubPreTax(total.getShipping()+total.getSubtotal());
-        total.setTax(total.getSubPreTax()*0.7);
+        total.setTax(total.getSubPreTax()*0.07);
         total.setGrandTotal(total.getSubPreTax()+total.getTax());
 
         return total;
@@ -125,17 +138,32 @@ public class Order {
         return null;
     }
 
-    public static Order selectOrdersByID(Connection conn, Integer id) throws SQLException {
+    public static ArrayList<Order> selectOrdersByUserId(Connection conn, Integer id) throws SQLException {
+        ArrayList<Order> orders = new ArrayList<>();
         if (id != null) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM orders where id = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM orders where user_id = ?");
             stmt.setInt(1, id);
             ResultSet results = stmt.executeQuery();
-            if (results.next()) {
-                return populateOrder(results);
+            while (results.next()) {
+                orders.add(populateOrder(results));
             }
+            return orders;
         }
         return null;
     }
+
+    public static ArrayList<Item> innerJoinItems(Connection conn, int id) throws SQLException {
+        ArrayList<Item> item = new ArrayList<>();
+        PreparedStatement stmt = conn.prepareStatement("Select order_items.item_id, items.name, items.price, order_items.quantity, order_items.order_id  from items\n" +
+                "INNER JOIN order_items ON items.id = Order_items.item_id WHERE order_items.order_id = ?");
+        stmt.setInt(1, id);
+        ResultSet results = stmt.executeQuery();
+        while (results.next()) {
+            item.add(Item.populatePurchaseItem(results));
+        }
+        return item;
+    }
+
 
     //START Methods that Alter Database
 
@@ -174,17 +202,6 @@ public class Order {
                 stmt.execute();
     }
 
-    public static ArrayList<Item> innerJoinItems(Connection conn, int id) throws SQLException {
-        ArrayList<Item> item = new ArrayList<>();
-        PreparedStatement stmt = conn.prepareStatement("Select order_items.item_id, items.name, items.price, order_items.quantity, order_items.order_id  from items\n" +
-                "INNER JOIN order_items ON items.id = Order_items.item_id WHERE order_items.order_id = ?");
-        stmt.setInt(1, id);
-        ResultSet results = stmt.executeQuery();
-        while (results.next()) {
-            item.add(Item.populatePurchaseItem(results));
-        }
-        return item;
-    }
     public static void checkout (Connection conn, int id) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("UPDATE orders set open = false where id = ?");
                 stmt.setInt(1,id);

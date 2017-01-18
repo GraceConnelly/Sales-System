@@ -12,7 +12,10 @@
     <form action="/cart" method="get">
             <button type="submit">My Cart</button>
         </form>
-    <h2>Let me know what you want, I can totally get it for you!</h2>
+    <form action="/orders" method="get">
+        <button type="submit">View All My Orders</button>
+    </form>
+    <h2>{{name}}, let me know what you want, I can totally get it for you!</h2>
     <form action ="/add-to-cart" method="post">
         <input type="text" placeholder="Enter the item name" name="itemName"/>
         <input type="number" placeholder="Qty" name="quantity"/>

@@ -1,5 +1,7 @@
 package com.theironyard.charlotte;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -10,7 +12,7 @@ public class User {
     Integer id;
     String email;
     String name;
-    ArrayList<Item> orders;
+    ArrayList<Order> orders;
 
     public User() {
     }
@@ -50,11 +52,11 @@ public class User {
         this.name = name;
     }
 
-    public ArrayList<Item> getOrders() {
+    public ArrayList<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(ArrayList<Item> orders) {
+    public void setOrders(ArrayList<Order> orders) {
         this.orders = orders;
     }
 
@@ -94,6 +96,19 @@ public class User {
         }
         return null;
     }
+
+    public static ArrayList<Order> getAllUserOrders(Connection conn, Integer id) throws SQLException {
+        if( id != null ) {
+            ArrayList<Order> orders = Order.selectOrdersByUserId(conn, id);
+            for (Order order : orders) {
+                order.setItems(Order.innerJoinItems(conn, order.getId()));
+                order.setTotal(Order.calcTotals(conn, order.getItems()));
+            }
+            return orders;
+        }
+        return null;
+    }
+
     //Alters the Database
     public static User insertAndReturnNewUser(Connection conn, User newUser) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO users VALUES (NULL, ?, ?)");

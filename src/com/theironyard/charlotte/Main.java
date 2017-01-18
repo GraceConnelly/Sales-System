@@ -15,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
         Spark.staticFileLocation("/public");
-        Server.createWebServer().start();
+       // Server.createWebServer().start();
         Connection conn = DriverManager.getConnection("jdbc:h2:./main");
         User.createTable(conn);
         Order.createOrderTable(conn);
@@ -98,17 +98,22 @@ public class Main {
                     User currentUser = User.selectUserById(conn, session.attribute("userId"));
                     Order currentOrder = Order.selectOpenOrdersByID(conn, session.attribute("orderId"));
                     Integer itemId = Integer.valueOf(request.queryParams("id"));
+                    if (request.queryParams("quantity").equals("")) {
+                        response.redirect("/");
+                        return "";
+                    }
+                    Integer qty = Integer.valueOf(request.queryParams("quantity"));
                     if (itemId == null) {
                         itemToCart.setName(request.queryParams("itemName"));
                         itemToCart.setPrice(Double.valueOf(request.queryParams("price")));
-                        itemToCart.setQuantity(Integer.valueOf(request.queryParams("quantity")));
+                        itemToCart.setQuantity(qty);
                         //if item exists get its id
                         //if item doesn't exist then I want to add it to my Items Table
                         itemToCart = Item.insertSelectItemByNameAndPrice(conn, itemToCart);
                     }
                     else{
                         itemToCart = Item.insertSelectItemById(conn, itemId);
-                        itemToCart.setQuantity(Integer.valueOf(request.queryParams("quantity")));
+                        itemToCart.setQuantity(qty);
                     }
 
                     //when item exists check if item is in orderItems. if not add
@@ -128,7 +133,6 @@ public class Main {
             Order currentOrder = Order.selectOpenOrdersByID(conn, session.attribute("orderId"));
 //                  check for user in database
                 m.put("name", currentUser.name );
-                m.put("email",  currentUser.email);
 //                m.put("cart",Order.listCart(conn, currentOrder));
                 currentOrder.items = Order.innerJoinItems(conn, currentOrder.id);
                 m.put("cart",currentOrder.items);
@@ -145,6 +149,18 @@ public class Main {
                     response.redirect("/");
                     return "";
                 }))
+        );
+        Spark.get(
+                "/orders",
+                ((request, response) -> {
+                    HashMap m = new HashMap();
+                    Session session = request.session();
+                    User currentUser = User.selectUserById(conn, session.attribute("userId"));
+                    m.put("name", currentUser.name );
+                    m.put("orders",User.getAllUserOrders(conn, currentUser.id));
+                    return new ModelAndView(m,"orders.html");
+                }),
+                new MustacheTemplateEngine()
         );
     }
 }

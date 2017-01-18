@@ -13,16 +13,24 @@
 <form action="/" method="get">
     <button type="submit">Wait! I want to BUY MORE THINGS!</button>
 </form>
+<form action="/orders" method="get">
+    <button type="submit">View All My Orders</button>
+</form>
+{{^cart}}
+<h2>{{name}}, your cart is empty. You should buy some stuff!</h2>
+{{/cart}}
 <form action="/checkout" method="post">
     <button type="submit">Checkout!</button>
 </form>
 <h2>{{name}}! This is your current, totally legitimate cart!</h2>
     <table class = center cellpadding = "5" cellspacing = "5">
+
         <tr>
             <th>Item Name</th>
             <th>Price</th>
             <th>Quantity</th>
         </tr>
+
         {{#cart}}
         <tr>
             <td>{{name}}</td>
@@ -31,15 +39,30 @@
         </tr>
         {{/cart}}
     </table>
-    <table class= center cellpadding="5"cellspacing="5">
-        {{total}}
+<h2>Total, by which you should totally buy this crap:</h2>
+    <table class = center cellpadding="5"cellspacing="5">
+        {{#total}}
         <tr>
-            <td>Item(s) Subtotal: {{subtotal}}</td>
-            <td>Shipping & Handling: {{shipping}}</td>
-            <td>Total before tax: {{subPreTax}}</td>
-            <td>Estimated tax to be collected: {{tax}}</td>
-            <td>Grand Total: {{grandTotal}}</td>
+            <td>Item(s) Subtotal: </td>
+            <td>{{subtotal}}</td>
         </tr>
+        <tr>
+            <td>Shipping & Handling:</td>
+            <td>{{shipping}}</td>
+        </tr>
+        <tr>
+            <td>Total before tax:</td>
+            <td>{{subPreTax}}</td>
+        </tr>
+        <tr>
+            <td>Estimated tax to be collected:</td>
+            <td>{{tax}}</td>
+        </tr>
+        <tr>
+            <td><h2>Grand Total:</h2></td>
+            <td><h2>{{grandTotal}}</h2></td>
+        </tr>
+        {{/total}}
     </table>
 </body>
 </html>
