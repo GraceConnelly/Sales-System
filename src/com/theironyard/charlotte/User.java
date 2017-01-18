@@ -72,7 +72,8 @@ public class User {
         String name = results.getString("name");
         return new User(id, email, name);
     }
-    //Gets info from database
+
+    //START Methods that get things from the data base
     public static User selectUserByNameAndEmail(Connection conn, User reqUser) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users where upper(email) = ? and upper(name) = ?");
         stmt.setString(1, reqUser.getEmail().toUpperCase());
@@ -85,7 +86,7 @@ public class User {
         }
     }
 
-    public static User selectUserById(Connection conn, Integer id) throws SQLException{
+    public static User selectUserById(Connection conn, Integer id) throws SQLException {
         if(id != null) {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users where id = ?");
             stmt.setInt(1, id);
@@ -109,7 +110,7 @@ public class User {
         return null;
     }
 
-    //Alters the Database
+    //START Methods that alter the Database
     public static User insertAndReturnNewUser(Connection conn, User newUser) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO users VALUES (NULL, ?, ?)");
         stmt.setString(1, newUser.getEmail());

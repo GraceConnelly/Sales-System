@@ -1,7 +1,5 @@
 package com.theironyard.charlotte;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -33,7 +31,13 @@ public class Order {
         this.open = open;
     }
 
-
+    public Order(Integer id, Integer userId, boolean open, ArrayList<Item> items, Total total) {
+        this.id = id;
+        this.userId = userId;
+        this.open = open;
+        this.items = items;
+        this.total = total;
+    }
 
     public Integer getId() {
         return id;
@@ -97,8 +101,9 @@ public class Order {
             boolean open = results.getBoolean("open");
             return new Order(id, userId, open);
     }
-    //calculates subtotal of all items in currentorder
-    public static Total calcTotals(Connection conn, ArrayList<Item> items) throws SQLException{
+
+    //calculates subtotal of all items in current Order
+    public static Total calcTotals(Connection conn, ArrayList<Item> items) throws SQLException {
         Total total = new Total(0.0,0.0,0.0,0.0,0.0);
         for (Item item : items) {
              total.setSubtotal(total.getSubtotal()+(item.getPrice() * item.getQuantity()));
@@ -111,8 +116,8 @@ public class Order {
         return total;
     }
 
-    //START Pulls Things from Database
-    public static Order returnLatestById (Connection conn, User currentU) throws SQLException{
+    //START Methods that pull Things from Database
+    public static Order returnOrCreateLatestById(Connection conn, User currentU) throws SQLException {
         if (currentU.id != null) {
             PreparedStatement stmt = conn.prepareStatement("SELECT TOP 1 * FROM orders where user_id = ? and open = true Order by id DESC");
             stmt.setInt(1, currentU.id);
@@ -134,6 +139,7 @@ public class Order {
             if (results.next()) {
                 return populateOrder(results);
             }
+
         }
         return null;
     }
@@ -164,9 +170,7 @@ public class Order {
         return item;
     }
 
-
     //START Methods that Alter Database
-
     public static void insertUpdateOrderItems(Connection conn, Item item, int orderId ) throws SQLException{
         PreparedStatement stmt = conn.prepareStatement("SELECT TOP 1 * FROM order_items where order_id = ? and item_id =?");
         stmt.setInt(1, orderId);
@@ -185,8 +189,9 @@ public class Order {
                 stmt.setInt(1, currentU.id);
                 stmt.setBoolean(2, true);
                 stmt.execute();
-        return returnLatestById(conn, currentU);
+        return returnOrCreateLatestById(conn, currentU);
     }
+
     public static void orderItemUpdate(Connection conn, Item item, int orderId) throws SQLException{
         PreparedStatement stmt = conn.prepareStatement("UPDATE order_items SET quantity = quantity + ? WHERE order_id = ? AND item_id = ?");
                 stmt.setInt(1, item.quantity);
@@ -194,6 +199,7 @@ public class Order {
                 stmt.setInt(3, item.id);
                 stmt.execute();
     }
+
     public static void insertOrderItem(Connection conn, Item item, int orderId) throws SQLException{
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO order_items values (? , ?, ?)");
                 stmt.setInt(1, orderId);

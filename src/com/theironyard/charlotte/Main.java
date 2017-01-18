@@ -1,6 +1,5 @@
 package com.theironyard.charlotte;
 
-import org.h2.tools.Server;
 import spark.ModelAndView;
 import spark.Session;
 import spark.Spark;
@@ -23,28 +22,20 @@ public class Main {
         Item.createTable(conn);
         Spark.init();
 
-//        Spark.get("/scamAzon",
-//                (request, response) -> {
-//                    return "";
-//                });
-//        Spark.get("/scamAzon-items",
-//                (request, response) -> {
-//            return "";
-//                });Map sessions = new HashMap<>();
-
         Spark.get(
                 "/",
                 ((request, response) -> {
                     HashMap m = new HashMap();
-                    Session session = request.session();//look up existing cookie value if there isn't one then we will set a new cookie value
-                    //theses items are coming from the website to populate
+                    Session session = request.session();
                     User currentUser = User.selectUserById(conn, session.attribute("userId"));
                     Order currentOrder = Order.selectOpenOrdersByID(conn, session.attribute("orderId"));
-//                    check for user in database
-                    if (currentUser == null) {//if we don't have a User name lets ask them to log in
+                    //check for user in database
+                    if (currentUser == null) {
+                        //if we don't have a User name lets ask them to log in
                         return new ModelAndView(m, "login.html");
                     }
-                    else {//we have one...yay! lets make a view
+                    else {
+                        //we have a user
                         if (currentOrder == null){
                             currentOrder = Order.insertAndReturnNewOrder(conn, currentUser);
                             session.attribute("orderId", currentOrder.id);
@@ -57,6 +48,7 @@ public class Main {
                 }),
                 new MustacheTemplateEngine()
         );
+
         Spark.post(
                 "/login",
                 ((request, response) -> {
@@ -66,13 +58,14 @@ public class Main {
                     User currentUser = User.selectUserByNameAndEmail(conn, reqU);
                     Order currentOrder;
                     if (currentUser == null){
+                        //if there is no current user in session lets make one.
                         currentUser = User.insertAndReturnNewUser(conn, reqU);
-                        //currentUser = User.selectUserByNameAndEmail(conn, reqU);
                         currentOrder = Order.insertAndReturnNewOrder(conn, currentUser);
-//                        newUser.orders = new ArrayList<Item>();
                     }
                     else {
-                        currentOrder = Order.returnLatestById(conn, currentUser);
+                        //if there is user lets check for and get the most recent order.
+                        // if there isnt an open order lets just create one.
+                        currentOrder = Order.returnOrCreateLatestById(conn, currentUser);
                     }
                     Session session = request.session();
                     session.attribute("userId", currentUser.id);
@@ -81,6 +74,7 @@ public class Main {
                     return "";
                 })
         );
+
         Spark.post(
                 "/logout",
                 ((request, response) -> {
@@ -90,6 +84,7 @@ public class Main {
                     return "";
                 })
         );
+
         Spark.post(
                 "/add-to-cart",
                 ((request, response) -> {
@@ -98,7 +93,8 @@ public class Main {
                     User currentUser = User.selectUserById(conn, session.attribute("userId"));
                     Order currentOrder = Order.selectOpenOrdersByID(conn, session.attribute("orderId"));
                     Integer itemId = Integer.valueOf(request.queryParams("id"));
-                    if (request.queryParams("quantity").equals("")) {
+                    //if any of our required values turn out to be invalid lets go home.
+                    if (request.queryParams("quantity").equals("") || currentUser == null || currentOrder == null) {
                         response.redirect("/");
                         return "";
                     }
@@ -115,7 +111,6 @@ public class Main {
                         itemToCart = Item.insertSelectItemById(conn, itemId);
                         itemToCart.setQuantity(qty);
                     }
-
                     //when item exists check if item is in orderItems. if not add
                     //if it does then update quantity.
                     Order.insertUpdateOrderItems(conn, itemToCart, currentOrder.id);
@@ -123,24 +118,27 @@ public class Main {
                     return "";
                 })
         );
+
         Spark.get(
                 "/cart",
-        ((request, response) ->{
-            HashMap m = new HashMap();
-            Session session = request.session();//look up existing cookie value if there isn't one then we will set a new cookie value
-            //theses items are coming from the website to populate
-            User currentUser = User.selectUserById(conn, session.attribute("userId"));
-            Order currentOrder = Order.selectOpenOrdersByID(conn, session.attribute("orderId"));
-//                  check for user in database
-                m.put("name", currentUser.name );
-//                m.put("cart",Order.listCart(conn, currentOrder));
-                currentOrder.items = Order.innerJoinItems(conn, currentOrder.id);
-                m.put("cart",currentOrder.items);
-                m.put("total",Order.calcTotals(conn, currentOrder.items));
-                return new ModelAndView(m, "cart.html");
-            }),
+                ((request, response) ->{
+                    HashMap m = new HashMap();
+                    Session session = request.session();
+                    User currentUser = User.selectUserById(conn, session.attribute("userId"));
+                    Order currentOrder = Order.selectOpenOrdersByID(conn, session.attribute("orderId"));
+                    if (currentUser == null || currentOrder == null) {
+                        response.redirect("/");
+                        return new ModelAndView(m, "login.html");
+                    }
+                        m.put("name", currentUser.name );
+                        currentOrder.items = Order.innerJoinItems(conn, currentOrder.id);
+                        m.put("cart",currentOrder.items);
+                        m.put("total",Order.calcTotals(conn, currentOrder.items));
+                        return new ModelAndView(m, "cart.html");
+                }),
                 new MustacheTemplateEngine()
         );
+
         Spark.post(
                 "/checkout",
                 (((request, response) -> {
@@ -150,6 +148,7 @@ public class Main {
                     return "";
                 }))
         );
+
         Spark.get(
                 "/orders",
                 ((request, response) -> {

@@ -1,7 +1,5 @@
 package com.theironyard.charlotte;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -88,13 +86,16 @@ public class Item {
         Statement stmt = conn.createStatement();
         stmt.execute("CREATE TABLE IF NOT EXISTS items (id IDENTITY, name VARCHAR, price DOUBLE)");
     }
-    //populates a user based on selectMethods.
+
+    //populates a item for inventory purposes based on data returning from database.
     public static Item populateItem(ResultSet results) throws SQLException {
         int id = results.getInt("id");
         String name = results.getString("name");
         Double price = results.getDouble("price");
         return new Item(id, name, price);
     }
+
+    //populates a item for order purposes based on data returning from database.
     public static Item populatePurchaseItem(ResultSet results) throws SQLException {
         int id = results.getInt("item_id");
         String name = results.getString("name");
@@ -104,6 +105,7 @@ public class Item {
         return new Item(id, name, price, quantity, orderId);
     }
 
+    //START Methods that query database
     public static ArrayList<Item> listAllItems(Connection conn) throws SQLException {
         ArrayList<Item> inventory = new ArrayList<>();
         Statement stmt = conn.createStatement();
@@ -113,6 +115,8 @@ public class Item {
         }
         return inventory;
     }
+
+    //START Methods that change database
     public static Item insertSelectItemById(Connection conn, Integer id) throws SQLException {
         if (id != null) {
             PreparedStatement stmt = conn.prepareStatement("SELECT TOP 1 * FROM items where id = ?");
@@ -138,7 +142,7 @@ public class Item {
         }
     }
 
-    public static Item insertItem(Connection conn, Item newItem) throws SQLException{
+    public static Item insertItem(Connection conn, Item newItem) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO items values (NULL, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         stmt.setString(1, newItem.name);
         stmt.setDouble(2, newItem.price);
@@ -149,16 +153,4 @@ public class Item {
         return newItem;
 
     }
-
-    public static void updateItem (Connection conn, Item item) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO items VALUES (NULL, ?, ?, ?, ?)");
-        stmt.setString(1, item.getName());
-        stmt.setInt(2, item.getQuantity());
-        stmt.setDouble(3, item.getPrice());
-        stmt.setInt(4, item.getOrderId());
-    }
-//
-//    public static boolean lookUpItem (Connection conn, Item item, Order order) throws SQLException {
-//        PreparedStatement stmt = conn.prepareStatement("");
-//    }
 }
